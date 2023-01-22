@@ -7,6 +7,29 @@
 
 import Foundation
 
+public struct SearchTickersResponse: Decodable {
+
+    public let error: ErrorResponse?
+    public let data: [Ticker]?
+
+    enum CodingKeys: CodingKey {
+        case count
+        case quotes
+        case finance
+    }
+
+    enum FinanceKeys: CodingKey {
+        case error
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        data = try? container.decodeIfPresent([Ticker].self, forKey: .quotes)
+        error = try? container.nestedContainer(keyedBy: FinanceKeys.self, forKey: .finance)
+            .decodeIfPresent(ErrorResponse.self, forKey: .error)
+    }
+}
+
 public struct Ticker: Codable, Identifiable, Hashable, Equatable {
     public let id = UUID()
 

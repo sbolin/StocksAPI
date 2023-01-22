@@ -12,28 +12,20 @@ import StocksAPI
 struct StocksAPIExec {
 
     private static let stocksAPI = StocksAPI()
-
     static func main() async {
         do {
-            print("\n")
-            print("################################################")
-            print("Quotes")
-            let quotes = try await stocksAPI.fetchQuotes(symbols: "AAPL,MSFT,GOOG,TSLA")
-            print(quotes)
+            // Fetch AAPL stocks last 1 day
+            let apple1dChart = try await stocksAPI.fetchChartData(tickerSymbol: "AAPL", range: .oneDay)
+            print(apple1dChart ?? "Not Found")
 
-            print("\n")
-            print("################################################")
-            print("Ticker")
-            let tickers = try await stocksAPI.searchTickers(query: "Apple")
+            // Search Ticker using "TESLA" as Query
+            let tickers = try await stocksAPI.searchTickers(query: "TESLA")
             print(tickers)
 
-            print("\n")
-            print("################################################")
-            print("Chart Data")
-            if let chart = try await stocksAPI.fetchChartData(symbol: "AAPL", range: .oneDay) {
-                print(chart)
-            }
-
+            // Fetch Quote Detail for multiple symbols
+            // AAPL, TSLA, GOOG, MSFT
+            let quotes = try await stocksAPI.fetchQuotes(symbols: "AAPL,TSLA,GOOG,MSFT")
+            print(quotes)
         } catch {
             print(error.localizedDescription)
         }

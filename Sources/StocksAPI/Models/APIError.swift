@@ -7,14 +7,13 @@
 
 import Foundation
 
-public enum APIError: CustomNSError {
+
+public enum APIServiceError: CustomNSError {
 case invalidURL
 case invalidResponseType
 case httpStatusCodeFailed(statusCode: Int, error: ErrorResponse?)
 
-    public static var errorDomain: String {
-        "StocksAPI"
-    }
+    public static var errorDomain: String { "StocksAPI" }
     public var errorCode: Int {
         switch self {
         case .invalidURL: return 0
